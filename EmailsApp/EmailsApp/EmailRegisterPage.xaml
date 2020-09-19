@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="EmailsApp.EmailRegisterPage">
+    
+    <ContentPage.Content>
+        <StackLayout Margin="30,60,30,0">
+            <Label Text="Hello.&#10;Welcome Back" 
+               FontSize="Title" TextColor="Black"/>
+
+            <StackLayout Margin="0,150,0,0">
+                <Entry x:Uid="entryEmail" Placeholder="Email"/>
+            </StackLayout>
+
+            <StackLayout Margin="0,15,0,0">
+                <Button x:Uid="buttonRegister" Text="Cadastrar" BackgroundColor="#0275D8" BorderRadius="7"/>                
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

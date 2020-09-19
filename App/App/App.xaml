@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"                   
+             mc:Ignorable="d"
+             x:Class="App.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Style x:Key="PrimaryButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="BlueViolet"/>
+                <Setter Property="TextColor" Value="White"/>
+                <Setter Property="CornerRadius" Value="10"/>
+            </Style>
+
+            <Style x:Key="SecundaryButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="White"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="CornerRadius" Value="10"/>                              
+            </Style>
+
+            <Style x:Key="TextEntry" TargetType="Entry">
+                <Setter Property="ClearButtonVisibility" Value="WhileEditing"/>
+                <Setter Property="IsTextPredictionEnabled" Value="False"/>
+                <Setter Property="Keyboard" Value="Text"/>
+                <Setter Property="TextColor" Value="BlueViolet"/>
+            </Style>
+
+            <Style x:Key="EmailEntry" TargetType="Entry">
+                <Setter Property="ClearButtonVisibility" Value="WhileEditing"/>
+                <Setter Property="IsTextPredictionEnabled" Value="False"/>
+                <Setter Property="Keyboard" Value="Email"/>                
+                <Setter Property="TextColor" Value="BlueViolet"/>
+            </Style>
+
+            <Style x:Key="PasswordEntry" TargetType="Entry">
+                <Setter Property="ClearButtonVisibility" Value="WhileEditing"/>
+                <Setter Property="IsTextPredictionEnabled" Value="False"/>
+                <Setter Property="Keyboard" Value="Default"/>
+                <Setter Property="TextColor" Value="BlueViolet"/>
+                <Setter Property="IsPassword" Value="True"/>
+            </Style>
+
+            <Style x:Key="LabelValidation" TargetType="Label">
+                <Setter Property="FontSize" Value="10"/>
+                <Setter Property="TextColor" Value="#FF3A30"/>                                
+                <Setter Property="IsVisible" Value="false"/>
+            </Style>
+
+        </ResourceDictionary>
+    </Application.Resources>    
+</Application>

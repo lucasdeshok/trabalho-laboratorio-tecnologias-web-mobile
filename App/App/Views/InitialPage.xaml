@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:App"
+             mc:Ignorable="d"
+             x:Class="App.InitialPage">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="BlueViolet">
+            <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <Image Margin="0,50,0,0">
+                    <Image.Source>
+                        <FontImageSource FontFamily="UserIcons" Color="White" Size="130"
+                                     Glyph="{x:Static local:FontIcons.Pasta}">
+                        </FontImageSource>
+                    </Image.Source>
+                </Image>
+                <Label x:Name="labelTitleApp" Text="foodRecipe" TextColor="White" FontSize="40"/>
+            </StackLayout>
+            
+            <StackLayout Padding="20" Margin="50,0,50,0">
+                <Button x:Name="buttonLogin" Text="Login" Clicked="ButtonLogin_Clicked" Style="{StaticResource SecundaryButton}"/>
+                <Label x:Name="labelCreateAccount" FontSize="16" Text="Create Account" TextColor="White" HorizontalOptions="Center" Margin="0,15,0,0">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="LabelCreateAccount_Tapped" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+            
+            <StackLayout VerticalOptions="EndAndExpand">
+                <StackLayout IsVisible="{Binding NoConnection}" x:Name="LabelStackLayout" Orientation="Horizontal" HorizontalOptions="Center" Padding="10,0,10,25">
+                    <StackLayout HorizontalOptions="StartAndExpand"></StackLayout>                    
+                    <Label Text="Made with" FontSize="15" TextColor="White" HorizontalTextAlignment="Center"/>                    
+                    <Image>
+                        <Image.Source>
+                            <FontImageSource FontFamily="UserIcons" Color="White" Size="20"
+                                     Glyph="{x:Static local:FontIcons.Heart}">
+                            </FontImageSource>
+                        </Image.Source>
+                    </Image>
+                    <Label Text="by Lucas" FontSize="15" TextColor="White" HorizontalTextAlignment="Center"/>                    
+                    <StackLayout HorizontalOptions="EndAndExpand"></StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

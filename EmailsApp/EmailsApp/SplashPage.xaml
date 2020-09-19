@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:EmailsApp"
+             mc:Ignorable="d"
+             x:Class="EmailsApp.SplashPage">
+    <ContentPage.Resources>
+        <Style TargetType="Label" x:Key="MyBaseLabelStyle">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+        </Style>
+        
+        <Style TargetType="Label" x:Key="MyBoldFontAwesomeLabelStyle" BasedOn="{StaticResource MyBaseLabelStyle}">
+            <Setter Property="FontFamily" Value="FontAwesomeBold"/>
+            <Setter Property="FontSize" Value="27"/>
+        </Style>
+        
+        <Style TargetType="Label" x:Key="MyRegularFontAwesomeLabelStyle" BasedOn="{StaticResource MyBaseLabelStyle}">
+            <Setter Property="FontFamily" Value="FontAwesomeRegular"/>
+            <Setter Property="FontSize" Value="27"/>
+        </Style>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="#007bff">
+            <Image>
+                <Image.Source>
+                    <FontImageSource FontFamily="FontAwesomeBold" Color="Black" Glyph="&#xf007;"/>
+                </Image.Source>
+            </Image>
+
+            <Label Text="{x:Static local:Icon.Laptop}"
+                   Style="{StaticResource MyBoldFontAwesomeLabelStyle}"
+                   Margin="0,100,0,50"
+                   VerticalOptions="CenterAndExpand"
+                   HorizontalOptions="CenterAndExpand"
+                   FontSize="125"                   
+                   TextColor="White"/>
+
+            <Label Text="EmailApp" 
+                   HorizontalOptions="Center" 
+                   VerticalOptions="CenterAndExpand"
+                   TextColor="White"
+                   FontSize="32"
+                   Margin="0,0,0,150"/>
+
+            <Label Margin="0,0,0,55"                
+                FontSize="15"                                                      
+                HorizontalTextAlignment="Center"                                      
+                VerticalOptions="EndAndExpand"                
+                Text="Made with ♥&#x0a;by Lucas"
+                TextColor="White"/>            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
