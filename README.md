@@ -12,12 +12,13 @@
 >> * Página de erro padronizada
 
 
->> #### **Email**
->> * Página inicial
->> * Cadastro de email
+>> #### **Login**
+>> * Autenticação de usuários
+>> * Cadastro de usuários
+>> * Recuperação de senha
 
 
 >> #### **Receitas**
->> * Página inicial
->> * Cadastro de receitas
->> * Consulta de receitas
+>> * Receitas cadastradas no banco local
+>> * Adicionar receitas como favorito
+>> * Receitas consumidas do seguinte repositório [Afrodite.json](https://github.com/adrianosferreira/afrodite.json)
