@@ -4,28 +4,26 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="App.LoginPage">
+             x:Class="App.LoginPage" Appearing="ContentPage_Appearing">
     <ContentPage.Content>
-        <StackLayout Padding="20">
+        <StackLayout Padding="20" Visual="Material">
             <StackLayout Margin="0,10,0,0">
-                <Label Text="Hello.&#10;Welcome back." FontSize="26" TextColor="BlueViolet"/>
+                <Label Text="Hello.&#10;Welcome back." FontSize="22" TextColor="BlueViolet"/>
             </StackLayout>
 
-            <StackLayout VerticalOptions="CenterAndExpand" Margin="0,50,0,0">
-                <Label Text="Email" Margin="5,0,0,0"/>
+            <StackLayout VerticalOptions="CenterAndExpand" Margin="0,50,0,0">                
                 <Label x:Name="labelInvalidEmail" Text="Invalid email" Margin="5,0,0,0" Style="{StaticResource LabelValidation}"/>
-                <Entry x:Name="entryEmail" Style="{StaticResource EmailEntry}"/>
+                <Entry x:Name="entryEmail" Placeholder="Email" Style="{StaticResource EmailEntry}"/>
             </StackLayout>
 
-            <StackLayout>
-                <Label Text="Password" Margin="5,0,0,0"/>
+            <StackLayout>                
                 <Label x:Name="labelInvalidPassword" Text="Invalid password" Margin="5,0,0,0" Style="{StaticResource LabelValidation}"/>
-                <Entry x:Name="entryPassword" Style="{StaticResource PasswordEntry}"/>
+                <Entry x:Name="entryPassword" Placeholder="Password" Style="{StaticResource PasswordEntry}"/>
             </StackLayout>
 
             <StackLayout Orientation="Horizontal">
                 <StackLayout  Margin="10,0,0,0">
-                    <Label x:Name="labelForgotPassword" Text="Forgot Password?" Margin="0,6,0,0">
+                    <Label x:Name="labelForgotPassword" Text="Forgot Password?" Margin="0,12,0,0">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Tapped="LabelForgotPassword_Tapped" />
                         </Label.GestureRecognizers>
@@ -33,12 +31,12 @@
                 </StackLayout>
 
                 <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand" Margin="0,0,6,0" Spacing="5">
-                    <Label Text="Remember-me" Margin="0,6,0,0"/>
+                    <Label Text="Remember-me" Margin="0,12,0,0"/>
                     <CheckBox x:Name="checkBoxRememberMe" Margin="0,0,0,0" Color="BlueViolet"/>
                 </StackLayout>
             </StackLayout>
 
-            <StackLayout Margin="50,35,50,15" VerticalOptions="EndAndExpand">
+            <StackLayout Margin="50,20,50,10" VerticalOptions="EndAndExpand">
                 <Button x:Name="buttonLogin" Text="Login" Clicked="ButtonLogin_Clicked" Style="{StaticResource PrimaryButton}"/>
             </StackLayout>
 

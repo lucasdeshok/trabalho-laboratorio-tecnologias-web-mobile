@@ -6,38 +6,34 @@
              mc:Ignorable="d"
              x:Class="App.CreateAccountPage">
     <ContentPage.Content>
-        <StackLayout Padding="20">
+        <StackLayout Padding="20" Visual="Material">
             <StackLayout Margin="0,10,0,0">
-                <Label Text="Create.&#10;Account." FontSize="26" TextColor="BlueViolet"/>
+                <Label Text="Create.&#10;Account." FontSize="22" TextColor="BlueViolet"/>
             </StackLayout>
-           
-            <StackLayout Margin="0,50,0,0" Orientation="Vertical" VerticalOptions="CenterAndExpand">
-                <StackLayout>
-                    <Label Text="First Name" Margin="5,0,0,0"/>
+
+            <StackLayout Spacing="25" Margin="0,50,0,0" Orientation="Vertical" VerticalOptions="CenterAndExpand">
+                <StackLayout >                    
                     <Label x:Name="labelInvalidFirstName" Text="Invalid name" Margin="5,0,0,0" Style="{StaticResource LabelValidation}"/>
-                    <Entry x:Name="entryFirstName" Style="{StaticResource TextEntry}"/>                    
+                    <Entry x:Name="entryFirstName" Placeholder="First Name" Style="{StaticResource TextEntry}" Unfocused="EntryFirstName_Unfocused"/>                    
+                </StackLayout>
+
+                <StackLayout>
+                    <Entry x:Name="entryLastName" Placeholder="Last Name" Style="{StaticResource TextEntry}"/>
                 </StackLayout>
 
                 <StackLayout>                    
-                    <Label Text="Last Name" Margin="5,0,0,0"/>
-                    <Entry x:Name="entryLastName" Style="{StaticResource TextEntry}"/>
-                </StackLayout>
-
-                <StackLayout>
-                    <Label Text="Email" Margin="5,0,0,0"/>
                     <Label x:Name="labelInvalidEmail" Text="Invalid email" Margin="5,0,0,0" Style="{StaticResource LabelValidation}"/>
-                    <Entry x:Name="entryEmail" Style="{StaticResource EmailEntry}"/>                    
+                    <Entry x:Name="entryEmail" Placeholder="Email" Style="{StaticResource EmailEntry}" Unfocused="EntryEmail_Unfocused" />                    
                 </StackLayout>
 
-                <StackLayout>
-                    <Label Text="Password" Margin="5,0,0,0"/>
+                <StackLayout>                    
                     <Label x:Name="labelInvalidPassword" Text="Invalid password" Margin="5,0,0,0" Style="{StaticResource LabelValidation}"/>
-                    <Entry x:Name="entryPassword" Style="{StaticResource PasswordEntry}"/>                    
+                    <Entry x:Name="entryPassword" Placeholder="Password" Style="{StaticResource PasswordEntry}" Unfocused="EntryPassword_Unfocused" />                    
                 </StackLayout>
             </StackLayout>
             
-            <StackLayout Margin="50,35,50,15" VerticalOptions="EndAndExpand">
-                <Button x:Name="buttonCreate" Text="Create" Style="{StaticResource PrimaryButton}" Clicked="ButtonCreate_Clicked"/>
+            <StackLayout Margin="50,20,50,10" VerticalOptions="EndAndExpand">
+                <Button x:Name="buttonSave" Text="Save" Style="{StaticResource PrimaryButton}" Clicked="ButtonSave_Clicked"/>
             </StackLayout>
         </StackLayout>
         

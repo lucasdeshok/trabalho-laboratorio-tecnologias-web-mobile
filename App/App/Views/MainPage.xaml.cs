@@ -1,4 +1,5 @@
-﻿using App.Models;
+﻿using Android.App.Admin;
+using App.Models;
 using App.Repository;
 using App.Views;
 using System;
@@ -14,26 +15,35 @@ namespace App
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
+        bool resetPassword = false;
+        User userAuth = new User();
         Recipe recipe = new Recipe();
         List<Recipe> recipes = new List<Recipe>();
+        UserRepository userRepository = new UserRepository();
+        RecipeRepository recipeRepository = new RecipeRepository();
 
         public MainPage()
         {
             InitializeComponent();
         }
 
-        public MainPage(string name)
+        public MainPage(string firstName, string email, bool resetPassword = true)
         {
             InitializeComponent();
+            
+            userAuth.FirstName = firstName;
+            userAuth.Email = email;
 
-            if (!string.IsNullOrWhiteSpace(name))
-                labelMessageUser.Text = string.Format("Hello, {0}.\nHere, your saved recipes.", name);
+            if (!string.IsNullOrWhiteSpace(firstName))
+                labelMessage.Text = string.Format("Hello, {0}.\nHere, your saved recipes.", firstName);            
         }
 
-        private void ContentPage_Appearing(object sender, EventArgs e)
+        async void ContentPage_Appearing(object sender, EventArgs e)
         {
-            var repository = new RecipeRepository();            
-            recipes = repository.GetAll().ToList();
+            stackLayoutOfLabelMessage.IsVisible = false;
+            stackLayoutActivityIndicator.IsVisible = false;
+
+            recipes = recipeRepository.GetAll().ToList();
 
             stackLayoutOfLabelMessage.IsVisible = false;
 
@@ -43,8 +53,34 @@ namespace App
             }
             else
             {
-                stackLayoutOfLabelMessage.IsVisible = true;                
-            }           
+                stackLayoutOfLabelMessage.IsVisible = true;
+            }
+
+            if (!resetPassword)
+                return;
+
+            userAuth = userRepository.Get(userAuth.Email);
+            if (userAuth.ForgotPassword)
+            {
+                string newPassword = await DisplayPromptAsync("Forgot password", "What's your new password?");
+
+                if (string.IsNullOrEmpty(newPassword))
+                {
+                    await DisplayAlert("Info", "You not input a new password, so will be set default 1111", "OK");
+                    userAuth.Password = "1111";
+                    userAuth.ForgotPassword = false;
+                    userAuth.UpdatedAt = DateTime.Now;
+                    userRepository.Save(userAuth);
+                }
+                else
+                {
+                    userAuth.ForgotPassword = false;
+                    userAuth.Password = newPassword;                                        
+                    userAuth.UpdatedAt = DateTime.Now;
+                    userRepository.Save(userAuth);
+                    await DisplayAlert("Info", "Great, your new password is saved", "OK");
+                }                
+            }       
         }
 
         private void ButtonRegister_Clicked(object sender, EventArgs e)
@@ -55,7 +91,19 @@ namespace App
         private void EntrySearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             listViewRecipes.ItemsSource = null;
-            listViewRecipes.ItemsSource = recipes.Where(i => i.Name.Contains(e.NewTextValue));
+            listViewRecipes.ItemsSource = recipes.Where(x => x.Name.ToLower().Contains(e.NewTextValue));
+        }
+
+        private void ListViewRecipes_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem == null)
+            {
+                DisplayAlert("Info", "Hey, please select an item :)", "OK");
+                return;
+            }
+
+            recipe = (e.SelectedItem as Recipe);
+            Navigation.PushAsync(new RecipeDetailPage(recipe.Id));
         }
     }
 }

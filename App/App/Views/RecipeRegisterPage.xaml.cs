@@ -53,34 +53,17 @@ namespace App.Views
             listViewRecipes.ItemsSource = recipes.Where(i => i.Name.Contains(e.NewTextValue));
         }
 
-        private void TapGestureRecognizer_Tapped(object sender, SelectedItemChangedEventArgs e)
+        private void ButtonSave_Clicked(object sender, EventArgs e)
         {
-            if (e.SelectedItem == null)
+            var result = repository.Get(recipe.Id);
+
+            if (result != null)
             {
-                DisplayAlert("Info", "Hey, please select an item :)", "OK");
+                DisplayAlert("Info", "Recipes already registered :)", "OK");
                 return;
             }
 
-            recipe = (e.SelectedItem as Recipe);
-            Navigation.PushAsync(new RecipeDetailPage(recipe));
-        }
-
-        private void ButtonRegister_Clicked(object sender, EventArgs e)
-        {
-            bool result = repository.CheckExists(recipe);
-            
-            if (result)
-            {
-                DisplayAlert("Info", "Recipes already registered :(", "OK");
-                return;
-            }
-
-            if (recipe.Id.Length > 0)
-            {
-                result = repository.Save(recipe);
-            }
-
-            if (result)
+            if (repository.Save(recipe))
             {
                 DisplayAlert("Info", "Recipe save success :)", "OK");
                 Navigation.PushAsync(new MainPage());
@@ -90,7 +73,6 @@ namespace App.Views
                 DisplayAlert("Info", "Something wrong :(", "OK");
                 return;
             }
-
         }
     }
 }

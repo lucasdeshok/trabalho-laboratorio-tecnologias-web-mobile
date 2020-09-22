@@ -2,54 +2,53 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="App.Views.RecipeRegisterPage" Appearing="ContentPage_Appearing">
-    <ContentPage.Content>
-        <StackLayout Padding="20">
+    
+        <StackLayout Padding="20" Visual="Material">
             <StackLayout Margin="0,10,0,0">
-                <Label x:Name="labelMessageUser" Text="Here.&#10;Thousands recipes directly of Afrodite." FontSize="24" TextColor="BlueViolet"/>                
-            </StackLayout>
+                <Label x:Name="labelTitle" Text="Here.&#10;Thousands recipes directly of Afrodite." FontSize="22" TextColor="BlueViolet"/>                
+            </StackLayout>            
             <StackLayout>
-                <StackLayout Margin="0,25,0,0">
-                    <Entry x:Name="entrySearch" Placeholder="Search a recipe" TextChanged="EntrySearch_TextChanged"/>
+                <StackLayout Margin="0,15,0,0">
+                    <Entry x:Name="entrySearch" Placeholder="Search a recipe" TextChanged="EntrySearch_TextChanged" Style="{StaticResource TextEntry}"/>
                 </StackLayout>
-
-                <StackLayout>
-                    <ActivityIndicator x:Name="activityIndicator" Color="BlueViolet" HorizontalOptions="Center" VerticalOptions="Start" IsRunning="False"/>
-                </StackLayout>
-                
-                <StackLayout x:Name="stackLayoutOfLabelMessage" VerticalOptions="Center" HorizontalOptions="Center">
-                    <Label x:Name="labelMessage" Text="No items found :(" VerticalOptions="CenterAndExpand"/>
-                </StackLayout>
-
                 <StackLayout x:Name="stackLayoutOfListViewRecipes">
-                    <ListView x:Name="listViewRecipes" RowHeight="60" ItemSelected="ListViewRecipes_ItemSelected">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <ViewCell.View>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="35*"/>
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>                                                
-                                            </Grid.ColumnDefinitions>
-                                            <StackLayout>
-                                                <Label Grid.Row="0" FontSize="14" Text="{Binding Name}" TextColor="Black"/>
-                                                <Label Grid.Row="1" FontSize="14" Text="{Binding Description }" TextColor="BlueViolet"/>
-                                            </StackLayout>
-                                        </Grid>
-                                    </ViewCell.View>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                <Frame BackgroundColor="#EDEDED" CornerRadius="16" Margin="0,15,0,0">
+                        <StackLayout>
+                            <StackLayout>
+                                <ActivityIndicator x:Name="activityIndicator" Color="BlueViolet" HorizontalOptions="Center" VerticalOptions="Start" IsRunning="False"/>
+                            </StackLayout>
+                            <StackLayout x:Name="stackLayoutOfLabelMessage" VerticalOptions="Center" HorizontalOptions="Center">
+                                <Label x:Name="labelMessage" Text="No items found :(" VerticalOptions="CenterAndExpand" FontSize="16"/>
+                            </StackLayout>
+                            <ListView x:Name="listViewRecipes" ItemSelected="ListViewRecipes_ItemSelected">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ViewCell>
+                                            <ViewCell.View>
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="*"/>
+                                                        <RowDefinition Height="35*"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackLayout>
+                                                        <Label Grid.Row="0" FontSize="14" Text="{Binding Name}" TextColor="Black"/>
+                                                        <Label Grid.Row="1" FontSize="14" Text="{Binding Description }" TextColor="BlueViolet"/>
+                                                    </StackLayout>
+                                                </Grid>
+                                            </ViewCell.View>
+                                        </ViewCell>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackLayout>
+                    </Frame>                    
                 </StackLayout>
-
             </StackLayout>
-            <StackLayout Margin="50,35,50,15" VerticalOptions="EndAndExpand">
-                <Button x:Name="buttonRegister" Text="Register" Style="{StaticResource PrimaryButton}" Clicked="ButtonRegister_Clicked"/>
+            <StackLayout Margin="50,15,50,10" VerticalOptions="EndAndExpand">
+                <Button x:Name="buttonSave" Text="Save" Style="{StaticResource PrimaryButton}" Clicked="ButtonSave_Clicked"/>
             </StackLayout>
-        </StackLayout>
-    </ContentPage.Content>
+        </StackLayout>    
 </ContentPage>

@@ -1,5 +1,6 @@
 ﻿using App.Models;
 using App.Repository;
+using App.Service;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -9,6 +10,9 @@ namespace App
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
+        User user = new User();
+        UserRepository repository = new UserRepository();
+
         public LoginPage()
         {
             InitializeComponent();
@@ -22,15 +26,19 @@ namespace App
 
         private void ButtonLogin_Clicked(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(entryEmail.Text) | string.IsNullOrWhiteSpace(entryPassword.Text))
-            {
-                labelInvalidEmail.IsVisible = true;
-                labelInvalidPassword.IsVisible = true;
-                return;
-            }            
-
             labelInvalidEmail.IsVisible = false;
             labelInvalidPassword.IsVisible = false;
+
+            if (string.IsNullOrWhiteSpace(entryPassword.Text))
+            {
+                labelInvalidPassword.IsVisible = true;
+            }
+
+            if (string.IsNullOrWhiteSpace(entryEmail.Text) | !Email.SenacEmailIsValid(entryEmail.Text))
+            {
+                labelInvalidEmail.IsVisible = true;
+                return;
+            }
 
             var user = new User();
             var repository = new UserRepository();
@@ -40,12 +48,12 @@ namespace App
 
             if(repository.Auth(user))
             {
-                var name = repository.GetByEmail(user.Email).FirstName;
+                var userAuth = repository.Get(user.Email);
 
                 entryEmail.Text = string.Empty;
                 entryPassword.Text = string.Empty;
 
-                Navigation.PushAsync(new MainPage(name));                
+                Navigation.PushAsync(new MainPage(userAuth.FirstName, user.Email));                
             }                
             else
             {
@@ -56,6 +64,19 @@ namespace App
         private void LabelForgotPassword_Tapped(object sender, EventArgs e)
         {
             Navigation.PushAsync(new ForgotPasswordPage());
+        }
+
+        private void ContentPage_Appearing(object sender, EventArgs e)
+        {
+            var user = repository.Get(true);
+            if (user == null)
+                return;
+
+            if (user.RememberMe)
+            {
+                Navigation.PushAsync(new MainPage(user.FirstName, user.Email));
+            }
+            
         }
     }
 }
