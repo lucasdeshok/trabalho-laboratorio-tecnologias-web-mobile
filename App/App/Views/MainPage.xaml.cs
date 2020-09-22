@@ -14,8 +14,7 @@ namespace App
     // by visiting https://aka.ms/xamarinforms-previewer
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
-    {
-        bool resetPassword = false;
+    {        
         User userAuth = new User();
         Recipe recipe = new Recipe();
         List<Recipe> recipes = new List<Recipe>();
@@ -27,19 +26,19 @@ namespace App
             InitializeComponent();
         }
 
-        public MainPage(string firstName, string email, bool resetPassword = true)
+        public MainPage(string firstName, string email)
         {
             InitializeComponent();
             
             userAuth.FirstName = firstName;
             userAuth.Email = email;
 
-            if (!string.IsNullOrWhiteSpace(firstName))
-                labelMessage.Text = string.Format("Hello, {0}.\nHere, your saved recipes.", firstName);            
+            if (!string.IsNullOrWhiteSpace(userAuth.FirstName))
+                labelTitle.Text = string.Format("Hello, {0}.\nHere, your saved recipes.", userAuth.FirstName);
         }
 
         async void ContentPage_Appearing(object sender, EventArgs e)
-        {
+        {           
             stackLayoutOfLabelMessage.IsVisible = false;
             stackLayoutActivityIndicator.IsVisible = false;
 
@@ -55,9 +54,6 @@ namespace App
             {
                 stackLayoutOfLabelMessage.IsVisible = true;
             }
-
-            if (!resetPassword)
-                return;
 
             userAuth = userRepository.Get(userAuth.Email);
             if (userAuth.ForgotPassword)
