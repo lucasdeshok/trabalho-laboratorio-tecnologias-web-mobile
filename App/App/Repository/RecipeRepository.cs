@@ -1,26 +1,26 @@
 ﻿using App.Models;
 using SQLite;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace App.Repository
 {
     public class RecipeRepository
     {
+        OtherInfoRepository infoRepository = new OtherInfoRepository();
+        IngredientRepository ingredientRepository = new IngredientRepository();
+        PreparationModeRepository modeRepository = new PreparationModeRepository();        
+
         public RecipeRepository()
         {
-            CreateAllTablesForMyDatabase();
+            CreateTableInMyDatabase();
         }
 
-        private void CreateAllTablesForMyDatabase()
+        private void CreateTableInMyDatabase()
         {
             using (var db = new SQLiteConnection(App.DatabasePath))
             {
-                db.CreateTable<Recipe>();
-                db.CreateTable<Ingredient>();
-                db.CreateTable<PreparationMode>();
-                db.CreateTable<OtherInfo>();
-                db.CreateTable<Favorite>();
-
+                db.CreateTable<Recipe>();                
                 db.Close();
             }
         }
@@ -30,50 +30,12 @@ namespace App.Repository
             int numberAffectedItems;
 
             using (var db = new SQLiteConnection(App.DatabasePath))
-            {
-                SaveIngredient(recipe.Ingredient);
-                SavePreparationMode(recipe.PreparationMode);
-                SaveOtherInfo(recipe.OtherInfo);
-                numberAffectedItems = db.Insert(recipe);
-                db.Close();
-            }
+            {                                                  
+                infoRepository.Save(recipe.OtherInfo);
+                modeRepository.Save(recipe.PreparationMode);
+                ingredientRepository.Save(recipe.Ingredient);
+                numberAffectedItems = db.InsertOrReplace(recipe);
 
-            return numberAffectedItems > 0;
-        }
-
-        public bool SaveIngredient(List<Ingredient> ingredient)
-        {
-            int numberAffectedItems;
-
-            using (var db = new SQLiteConnection(App.DatabasePath))
-            {
-                numberAffectedItems = db.InsertAll(ingredient);
-                db.Close();
-            }
-
-            return numberAffectedItems > 0;
-        }
-
-        public bool SavePreparationMode(List<PreparationMode> preparationMode)
-        {
-            int numberAffectedItems;
-
-            using (var db = new SQLiteConnection(App.DatabasePath))
-            {
-                numberAffectedItems = db.InsertAll(preparationMode);
-                db.Close();
-            }
-
-            return numberAffectedItems > 0;
-        }
-
-        public bool SaveOtherInfo(List<OtherInfo> otherInfo)
-        {
-            int numberAffectedItems;
-
-            using (var db = new SQLiteConnection(App.DatabasePath))
-            {
-                numberAffectedItems = db.InsertAll(otherInfo);
                 db.Close();
             }
 
@@ -86,11 +48,7 @@ namespace App.Repository
 
             using (var db = new SQLiteConnection(App.DatabasePath))
             {
-                db.Query<Ingredient>("delete from ingredient where recipe_id = ?", recipe.Id);
-                db.Query<PreparationMode>("delete from preparation_mode where recipe_id = ?", recipe.Id);
-                db.Query<OtherInfo>("delete from other_info where recipe_id = ?", recipe.Id);
-                numberAffectedItems = db.Delete(recipe);
-
+                numberAffectedItems = db.Delete<Recipe>(recipe);               
                 db.Close();
             }
 
@@ -103,50 +61,54 @@ namespace App.Repository
 
             using (var db = new SQLiteConnection(App.DatabasePath))
             {
-                result = db.Table<Recipe>().ToList();
+                result = db.Table<Recipe>().ToList();                
                 db.Close();
             }
 
             return result;
         }
 
-        public bool Update(Recipe recipe)
+        public Recipe Get(Recipe recipe)
         {
-            int numberAffectedItems;
+            var result = new Recipe();
+
+            using (var db = new SQLiteConnection(App.DatabasePath))
+            {
+                result = db.Get<Recipe>(recipe);
+                db.Close();
+            }
+
+            return result;
+        }
+
+        public Recipe Get(string id)
+        {
+            var result = new Recipe();
+
+            using (var db = new SQLiteConnection(App.DatabasePath))
+            {
+                result = db.Query<Recipe>("select * from recipe where id = ?", id).FirstOrDefault();
+                db.Close();
+            }
+
+            return result;
+        }
+
+        public Recipe GetDetails(string recipeId)
+        {
+            var result = new Recipe();
 
             using (var db = new SQLiteConnection(App.DatabasePath))
             {                
-                numberAffectedItems = db.Update(recipe);
+                result = db.Table<Recipe>().Where(i => i.Id == recipeId).FirstOrDefault();
+                result.Ingredient = db.Table<Ingredient>().Where(i => i.RecipeId == recipeId).ToList();
+                result.PreparationMode = db.Table<PreparationMode>().Where(i => i.RecipeId == recipeId).ToList();
+                result.OtherInfo = db.Table<OtherInfo>().Where(i => i.RecipeId == recipeId).ToList();
                 db.Close();
             }
 
-            return numberAffectedItems > 0;
+            return result;
         }
 
-        public bool SetFavorite(Recipe recipe)
-        {
-            int numberAffectedItems;
-
-            using (var db = new SQLiteConnection(App.DatabasePath))
-            {
-                numberAffectedItems = db.InsertOrReplace(recipe.Favorite);
-                db.Close();
-            }
-
-            return numberAffectedItems > 0;
-        }
-
-        public bool CheckExists(Recipe recipe)
-        {
-            int numberAffectedItems;
-
-            using (var db = new SQLiteConnection(App.DatabasePath))
-            {
-                numberAffectedItems = db.Table<Recipe>().Where(i => i.Id == recipe.Id).Count();
-                db.Close();                
-            }
-
-            return numberAffectedItems > 0;
-        }
     }
 }

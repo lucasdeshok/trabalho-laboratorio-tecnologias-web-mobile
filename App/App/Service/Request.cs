@@ -4,7 +4,11 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using Xamarin.Forms.Internals;
 
 namespace App.Service
 {
@@ -25,13 +29,14 @@ namespace App.Service
                     var data = response.GetResponseStream();
 
                     StreamReader streamReader = new StreamReader(data);
-                    object objectResponse = streamReader.ReadToEnd();                    
+                    object objectResponse = streamReader.ReadToEnd();
                     list = JsonConvert.DeserializeObject<List<RecipeJson>>(objectResponse.ToString());
                     data.Close();
                     response.Close();
                 }
 
-                return ToModel(list);
+                return ParseRecipeJson(list);
+
             }
             catch (Exception ex)
             {
@@ -39,16 +44,35 @@ namespace App.Service
             }
         }
 
-        private static List<Recipe> ToModel(List<RecipeJson> recipeJsons)
+        public async static Task<List<RecipeJson>> GetRecipeApiAsync()
+        {
+
+            var json = new List<RecipeJson>();
+            string url = "https://github.com/adrianosferreira/afrodite.json/raw/master/afrodite.json";
+
+            using (HttpClient client = new HttpClient())
+            {
+                var response = await client.GetAsync(url);
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    json = JsonConvert.DeserializeObject<List<RecipeJson>>(await response.Content.ReadAsStringAsync());
+                }
+            }
+
+            return json;
+        }
+
+        private static List<Recipe> ParseRecipeJson(List<RecipeJson> json)
         {
             var recipes = new List<Recipe>();
 
-            foreach (var item in recipeJsons)
+            foreach (var item in json)
             {
                 var recipe = new Recipe();
 
                 recipe.Id = item.Id.ObjectIdValue;
-                recipe.Name = item.Name;                
+                recipe.Name = item.Name;
 
                 foreach (var sessionItem in item.Session)
                 {
@@ -91,7 +115,7 @@ namespace App.Service
 
                 recipes.Add(recipe);
             }
-            
+
             return recipes;
         }
     }

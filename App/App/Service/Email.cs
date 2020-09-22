@@ -8,10 +8,10 @@ namespace App.Service
     {
         public static bool SenacEmailIsValid(string email)
         {
-            if (string.IsNullOrWhiteSpace(email.Trim()))
+            if (string.IsNullOrWhiteSpace(email))
                 return false;
 
-            Regex regex = new Regex(@"^[a-z0-9](\.?[a-z0-9]){5,30}@senac.edu.br$");
+            Regex regex = new Regex(@"^[a-z0-9](\.?[a-z0-9]){2,30}@senac.edu.br$");
             return regex.IsMatch(email);
         }
 

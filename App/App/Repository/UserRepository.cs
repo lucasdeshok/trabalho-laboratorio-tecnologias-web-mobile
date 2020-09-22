@@ -1,5 +1,7 @@
 ﻿using App.Models;
 using SQLite;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace App.Repository
 {
@@ -7,92 +9,89 @@ namespace App.Repository
     {
         public UserRepository()
         {
-            CreateTableForMyDatabase();
+            CreateTableInMyDatabase();
         }
 
-        private void CreateTableForMyDatabase()
+        private void CreateTableInMyDatabase()
         {
-            using (var connection = new SQLiteConnection(App.DatabasePath))
+            using (var db = new SQLiteConnection(App.DatabasePath))
             {
-                connection.CreateTable<User>();                
-                connection.Close();
+                db.CreateTable<User>();
+                db.Close();
             }
         }
 
-        public bool Create(User user)
+        public bool Auth(User user)
         {
-            int numberAffectedItems;
+            int numberAffectedRows = 0;
 
-            using (var connection = new SQLiteConnection(App.DatabasePath))
-            {                
-                numberAffectedItems = connection.Insert(user);
-                connection.Close();
+            using (var db = new SQLiteConnection(App.DatabasePath))
+            {
+                numberAffectedRows = db.Table<User>()
+                    .Where(item => item.Email == user.Email && item.Password == user.Password)
+                    .Count();
+                db.Close();
             }
 
-            return numberAffectedItems > 0;
+            return numberAffectedRows > 0;
         }
 
-        public bool Update(User user)
+        public bool Save(User user)
         {
-            int numberAffectedItems;
+            int numberAffectedRows = 0;
 
-            using (var connection = new SQLiteConnection(App.DatabasePath))
-            {                
-                numberAffectedItems = connection.Update(user);
-                connection.Close();
+            using (var db = new SQLiteConnection(App.DatabasePath))
+            {
+                numberAffectedRows = db.InsertOrReplace(user);                
+                db.Close();
             }
 
-            return numberAffectedItems > 0;
+            return numberAffectedRows > 0;
         }
 
-        public User GetByEmail(string email)
+        public List<User> Get()
         {
+            var users = new List<User>();
+
+            using (var db = new SQLiteConnection(App.DatabasePath))
+            {
+                users = db.Table<User>().ToList();
+                db.Close();
+            }
+
+            return users;
+        }
+
+        public User Get(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+                return null;
+            
             var user = new User();
 
-            using (var connection = new SQLiteConnection(App.DatabasePath))
-            {                
-                user = connection.Table<User>().Where(u => u.Email == email).FirstOrDefault();
-                connection.Close();
+            using (var db = new SQLiteConnection(App.DatabasePath))
+            {
+                user = db.Table<User>().Where(x => x.Email.Equals(email)).FirstOrDefault();
+                db.Close();
             }
 
             return user;
         }
 
-        public bool CheckExists(string email)
+        public User Get(bool rememberMe)
         {
-            int numberAffectedItems;
+            if (!rememberMe)
+                return null;
 
-            using (var connection = new SQLiteConnection(App.DatabasePath))
+            var user = new User();
+
+            using (var db = new SQLiteConnection(App.DatabasePath))
             {
-                numberAffectedItems = connection.Table<User>().Where(u => u.Email == email).Count();
-                connection.Close();
+                user = db.Query<User>("select * from user where remember_me = ?", true).FirstOrDefault();                                              
+                db.Close();
             }
 
-            return numberAffectedItems > 0;
-        }
-
-        public bool Delete(User user)
-        {
-            int numberAffectedItems;
-
-            using (var connection = new SQLiteConnection(App.DatabasePath))
-            {                
-                numberAffectedItems = connection.Delete(user);
-                connection.Close();
-            }
-
-            return numberAffectedItems > 0;
-        }
-
-        public bool Auth(User user)
-        {
-            using (var connection = new SQLiteConnection(App.DatabasePath))
-            {                
-                user = connection.Table<User>().Where(u => u.Email == user.Email && u.Password == user.Password).FirstOrDefault();
-                connection.Close();
-            }
-
-            return user != null;
+            return user;
         }
     }
 }

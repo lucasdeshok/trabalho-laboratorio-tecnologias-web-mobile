@@ -1,16 +1,18 @@
 ﻿using SQLite;
 using System;
+using System.Collections;
+using DataAnnotations = System.ComponentModel.DataAnnotations;
 
 namespace App.Models
 {
     [Table("user")]
     public class User
     {        
-        [PrimaryKey, AutoIncrement]        
+        [PrimaryKey, AutoIncrement]                
         [Column("id")]
-        public uint Id { get; set; }                
+        public uint Id { get; set; }                        
         
-        [MaxLength(50)]
+        [MaxLength(50)]        
         [Column("first_name")]
         public string FirstName { get; set; }
 
@@ -27,12 +29,15 @@ namespace App.Models
         public string Password { get; set; }
 
         [Column("created_at")]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
 
         [Column("updated_at")]
         public DateTime UpdatedAt { get; set; }
         
         [Column("remember_me")]
-        public bool RememberMe { get; set; } = false;
+        public bool RememberMe { get; set; }
+
+        [Column("forgot_password")]
+        public bool ForgotPassword { get; set; }
     }
 }
